@@ -7,14 +7,13 @@ typedef struct Player {
     int xPosition;
     int yPosition;
     int health;
-
-
-
 } Player;
 
 
 int screenSetUp();
 int mapSetup();
+int handleInput(int input, Player * user);
+int playerMove(int y, int x, Player * user);
 Player * playerSetup(); // create function to setup the player, returning struct
 
 
@@ -32,8 +31,12 @@ mapSetup();
 user = playerSetup(); // make it equal to struct returned
 
 
+
+// main game loop
+
 while ((ch = getch()) != 'q') {
 
+        handleInput(ch, user);
 }
 
 
@@ -97,9 +100,59 @@ Player * playerSetup() {
     newPlayer->yPosition = 14;
     newPlayer->health = 20;
 
-    mvprintw(newPlayer->yPosition, newPlayer->xPosition, "@");
-    move(newPlayer->yPosition, newPlayer->xPosition);
+playerMove(14, 14, newPlayer);
 
 
     return newPlayer;
+}
+
+
+
+int handleInput(int input, Player * user) {
+    switch(input) {
+        case 'w':
+        case 'W':
+        playerMove(user->yPosition - 1, user->xPosition, user);
+            break;
+
+        case 'a':
+        case 'A':
+        playerMove(user->yPosition, user->xPosition - 1, user);
+            break;
+
+        case 's':
+        case 'S':
+        playerMove(user->yPosition + 1, user->xPosition, user);
+            break; 
+
+        case 'd':
+        case 'D':
+        playerMove(user->yPosition, user->xPosition + 1, user);
+            break;
+
+
+        default: break;       
+
+
+
+
+
+    }
+
+
+
+}
+
+
+int playerMove(int y, int x, Player * user) {
+
+    mvprintw(user->yPosition, user->xPosition, "."); // replace with floor
+
+    user->xPosition = x;
+    user->yPosition = y;
+
+    mvprintw(user->yPosition, user->xPosition, "@"); // redraw after updating
+    move(user->yPosition, user->xPosition);
+
+
 }
