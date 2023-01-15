@@ -1,4 +1,4 @@
-#include <stdlib.h> // test
+#include <stdlib.h>
 #include <stdio.h>
 #include <ncurses.h>
 #include <time.h>
